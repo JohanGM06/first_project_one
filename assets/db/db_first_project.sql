@@ -1,12 +1,12 @@
 # DROP DATABASE db_appwebphp;
 -- -----------------------------------------------------
--- Estructura db_appwebphp
+-- Estructura db_appwebphp                            --
 -- -----------------------------------------------------
 CREATE DATABASE db_appwebphp DEFAULT CHARACTER SET utf8 ;
 USE db_appwebphp;
 
 -- -----------------------------------------------------
--- Tabla ROLES
+-- Tabla ROLES                                        --
 -- -----------------------------------------------------
 CREATE TABLE ROLES (
   rol_code INT(11) NOT NULL AUTO_INCREMENT,
@@ -15,7 +15,7 @@ CREATE TABLE ROLES (
 ) ENGINE = InnoDB;
 
 -- -----------------------------------------------------
--- Tabla Usuarios
+-- Tabla Usuarios                                     --
 -- -----------------------------------------------------
 CREATE TABLE USERS (
   rol_code INT(11) NOT NULL,
