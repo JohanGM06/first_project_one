@@ -1,11 +1,10 @@
-<?php 
-
+<?php
     class DataBase{       
-
+    
         public static function connection(){            
             $hostname = "localhost";
             $port = "3306";
-            $database = "db_first_project";
+            $database = "db_appwebphp";
             $username = "root";
             $password = "";
 			$pdo = new PDO("mysql:host=$hostname;port=$port;dbname=$database;charset=utf8",$username,$password);
@@ -13,5 +12,4 @@
 			return $pdo;
 		}
 	}
-
 ?>

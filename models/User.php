@@ -10,11 +10,16 @@
         protected $userPass;
         protected $userStatus;
         public function __construct(){
-            $a = func_get_args();
-            $i = func_num_args();
-            if (method_exists($this, $f = '__construct' . $i)) {
-                call_user_func_array(array($this, $f), $a);
-            }
+            try {
+                $this->dbh = DataBase::connection();
+                $a = func_get_args();
+                $i = func_num_args();
+                if (method_exists($this, $f = '__construct' . $i)) {
+                    call_user_func_array(array($this, $f), $a);
+                }
+            } catch (Exception $e) {
+                die($e->getMessage());
+            } 
         }
         public function __construct8($rolCode,$rolName,$userCode,$userName,$userLastName,$userEmail,$userPass,$userStatus){
             $this->rolCode = $rolCode;
@@ -47,12 +52,11 @@
         public function getRolName(){
             return $this->rolName;
         }
-
         public function setUserCode($userCode){
             $this->userCode = $userCode;
         }
-        public function getUserCode($userCode){
-            $this->userCode = $userCode;
+        public function getUserCode(){
+            return $this->userCode;
         }
         public function setUserName($userName){
             $this->userName = $userName;
@@ -84,8 +88,8 @@
         public function getUserStatus(){
             return $this->userStatus;
         }
-
-        // 2da parte pesistencia
+        // 2da parte persitencia
+        # CUXX - Crear Usuario
         public function userCreate(){
             try {
                 $sql = 'INSERT INTO USERS VALUES (
@@ -96,14 +100,14 @@
                     :userEmail,
                     :userPass,
                     :userStatus
-                    )';
+                )';
                 $stmt = $this->dbh->prepare($sql);
                 $stmt->bindValue('rolCode', $this->getRolCode());
                 $stmt->bindValue('userCode', $this->getUserCode());                
                 $stmt->bindValue('userName', $this->getUserName());                
                 $stmt->bindValue('userLastName', $this->getUserLastName());                
                 $stmt->bindValue('userEmail', $this->getUserEmail());                
-                $stmt->bindValue('userPass', $this->getUserPass());                
+                $stmt->bindValue('userPass', sha1($this->getUserPass()));
                 $stmt->bindValue('userStatus', $this->getUserStatus());                
                 $stmt->execute();
             } catch (Exception $e) {

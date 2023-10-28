@@ -1,9 +1,9 @@
-/**DROP DATABASE db_first_project;**/
+# DROP DATABASE db_appwebphp;
 -- -----------------------------------------------------
--- Estructura db_first_project
+-- Estructura db_appwebphp
 -- -----------------------------------------------------
-CREATE DATABASE db_first_project DEFAULT CHARACTER SET utf8 ;
-USE db_first_project;
+CREATE DATABASE db_appwebphp DEFAULT CHARACTER SET utf8 ;
+USE db_appwebphp;
 
 -- -----------------------------------------------------
 -- Tabla ROLES
@@ -20,7 +20,7 @@ CREATE TABLE ROLES (
 CREATE TABLE USERS (
   rol_code INT(11) NOT NULL,
   user_code INT(11) NOT NULL,
-  user_name VARCHAR(45) NOT NULL DEFAULT,
+  user_name VARCHAR(45) NOT NULL,
   user_lastname VARCHAR(45) NOT NULL,
   user_email VARCHAR(45) NOT NULL,
   user_pass VARCHAR(200) NOT NULL,

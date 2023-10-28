@@ -1,17 +1,12 @@
 <?php
-
-    class Rol {
+    class Rol{
         // ****** 1er Parte: Clase (POO) *************** //
-
-        //** ATTRIBUTES **/
-
+        // Atributos: Encapsulamiento
+        private $dbh;
         private $rolCode;
         private $rolName;
-        private $dbh;
-
-        //** FUNCTIONS **/
-
-        #SOBRE CARGA DE CONSTRUCTORES
+        // Métodos
+        # Sobrecarga de Constructores
         public function __construct(){
             try {
                 $this->dbh = DataBase::connection();
@@ -22,15 +17,13 @@
                 }
             } catch (Exception $e) {
                 die($e->getMessage());
-            }
+            } 
         }
-
         public function __construct2($rolCode, $rolName){
             $this->rolCode = $rolCode;
             $this->rolName = $rolName;
         }
-        /**  METODOS SET() Y GET() **/
-        
+        // Métodos set() y get()        
         # rolCode: set()
         public function setRolCode($rolCode){
             $this->rolCode = $rolCode;
@@ -47,11 +40,10 @@
         public function getRolName(){
             return $this->rolName;
         }
-
         // ****** 2da Parte: Persistencia DB (CRUD) ****** //
 
-         # CU09 - Registrar Rol
-         public function rolCreate(){
+        # CU09 - Registrar Rol
+        public function rolCreate(){
             try {
                 $sql = 'INSERT INTO ROLES VALUES (:rolCode,:rolName)';
                 $stmt = $this->dbh->prepare($sql);
@@ -62,9 +54,39 @@
                 die($e->getMessage());
             }
         }
-        # CU09 - Registrar Usuario
-        public function userCreate(){
-            
+        # CUXX - Consultar Roles
+        public function rolRead(){
+            try {
+                $rolList = [];
+                $sql = 'SELECT * FROM ROLES';
+                $stmt = $this->dbh->query($sql);                
+                foreach ($stmt->fetchAll() as $rol) {
+                    $rolList[] = new Rol(
+                        $rol['rol_code'],
+                        $rol['rol_name']
+                    );
+                }                
+                return $rolList;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
         }
-
-    }
+        # CUXX - Obtener el Rol por Id
+        public function getRolById($rolCode){
+            try {
+                $sql = "SELECT * FROM ROLES WHERE rol_code=:rolCode";
+                $stmt = $this->dbh->prepare($sql);
+                $stmt->bindValue('rolCode', $rolCode);
+                $stmt->execute();                
+                $rolDb = $stmt->fetch();                
+                $rol = new Rol(
+                    $rolDb['rol_code'],
+                    $rolDb['rol_name']
+                );                
+                return $rol;
+            } catch (Exception $e) {
+                die($e->getMessage());
+            }
+        }
+    }    
+?>
